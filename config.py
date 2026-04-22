@@ -22,6 +22,7 @@ def init_clients(mongo_uri: str, openai_api_key: str):
     global _mongo_client, _openai_client
     _mongo_client = AsyncIOMotorClient(mongo_uri)
     _openai_client = AsyncOpenAI(api_key=openai_api_key)
+    logger.info("Initialized MongoDB and OpenAI async clients")
 
 
 def get_db():
@@ -44,3 +45,4 @@ def close_clients():
     global _mongo_client
     if _mongo_client:
         _mongo_client.close()
+        logger.info("Closed MongoDB client")

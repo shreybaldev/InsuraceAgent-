@@ -15,5 +15,6 @@ env/
 .DS_Store
 
 *.log
+logs/
 
 *.pdf
