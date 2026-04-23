@@ -270,6 +270,59 @@ Document content:
 {document_content}"""
 
 
+JTBD_FRAMINGS = {
+    "retail_policy": (
+        "This is the person's OWN individual health insurance policy. "
+        "Summarise what they've got, name the strong parts, honestly flag the weaker ones without being alarmist, "
+        "and leave them with a clear sense of where their policy stands overall."
+    ),
+    "policy_wording": (
+        "This is the insurer's terms-and-conditions document. "
+        "Walk them through what the policy actually covers, what it excludes or puts waiting periods on, "
+        "and what can reduce a claim payout (for example room-rent proportionate deduction or co-payment). "
+        "Make the fine print understandable without scaring them."
+    ),
+    "brochure": (
+        "This is a sales brochure for a product they're considering. "
+        "Neutrally summarise the plan — what they'd get for their money, who it suits, the waiting periods, "
+        "and any costs or rewards that stand out. Help them decide; don't sell to them."
+    ),
+    "group_policy": (
+        "This is their employer-sponsored group health cover. "
+        "Walk them through it from their point of view — what's covered for them and their family — "
+        "then gently surface the gotchas (coverage ending if they leave the company, blanket co-payments, "
+        "limits on parents, modern-treatment sub-limits, etc.). Employer plans always have catches people don't notice; "
+        "your job is to make those visible without being ominous."
+    ),
+    "rejection_letter": (
+        "This is a claim denial letter addressed to them. They are probably stressed and frustrated. "
+        "Gently acknowledge what happened, explain the insurer's reason in plain terms, and walk them through the appeal steps "
+        "with the actual contacts they should use. Warmth matters here most. Leave them feeling they have a clear next step."
+    ),
+}
+
+
+NARRATION_PROMPT = """You are a warm, knowledgeable insurance advisor helping someone understand a document of theirs. Speak to them directly ("your policy", "you're covered") in plain everyday English.
+
+Document type: {doc_type}
+Focus for this document: {jtbd_framing}
+
+Style rules:
+- Natural-language paragraphs only. No bullet points, no headings, no markdown, no lists in your response.
+- Warm, clear, non-salesy. Like a friend who happens to understand insurance well and is looking out for them.
+- Only use facts present in the JSON below. Do not invent, estimate, benchmark, or compare to "industry averages" unless the JSON explicitly contains that information.
+- If a field is null, empty, or missing, simply skip it — do NOT call out its absence or apologise for it.
+- Briefly explain any technical term you have to use (e.g. "sub-limit", "co-payment", "waiting period").
+- 2 to 4 short paragraphs (roughly 120-220 words total). End on something grounding and practical.
+- Write in Indian English. Use Indian number formats where the JSON shows them (e.g. "INR 5 lakh", "95,00,000").
+- Do NOT begin with phrases like "Based on the JSON" or "According to the document" — just speak to them.
+
+Structured information about the document:
+{rendered_json}
+
+Write the paragraphs now. No preamble, no sign-off."""
+
+
 REJECTION_LETTER_EXTRACTION_PROMPT = """You are a claim rejection letter analyst. Read the rejection letter below and populate the following JSON schema EXACTLY.
 
 Rules:
