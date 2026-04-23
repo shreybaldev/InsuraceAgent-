@@ -29,20 +29,30 @@ async def classify_document(pages: list[str]) -> dict:
         raise ClassificationError("No pages to classify")
 
     client = get_openai_client()
+    total_pages = len(pages)
     window = pages[:_CLASSIFICATION_PAGES]
     document_content = "\n\n".join(
         f"--- Page {i + 1} ---\n{content}" for i, content in enumerate(window)
     )
 
-    logger.info(f"Classifying document using first {len(window)} page(s) of content")
+    logger.info(
+        f"Classifying document: total_pages={total_pages}, "
+        f"using first {len(window)} page(s) for content signal"
+    )
 
     response = await client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": CLASSIFICATION_PROMPT.format(document_content=document_content)}
+            {
+                "role": "user",
+                "content": CLASSIFICATION_PROMPT.format(
+                    total_pages=total_pages, document_content=document_content
+                ),
+            }
         ],
         response_format={"type": "json_object"},
         max_tokens=256,
+        temperature=0,
     )
 
     try:

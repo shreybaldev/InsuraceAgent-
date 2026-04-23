@@ -193,22 +193,33 @@ General Insurance FAQ (use ONLY if the document above has no relevant informatio
 {faq_context}"""
 
 
-CLASSIFICATION_PROMPT = """You are an insurance document classifier. Classify the following document into exactly one of these five types.
+CLASSIFICATION_PROMPT = """You are an insurance document classifier. Classify the document into exactly one of these five types. Apply the decision hierarchy strictly — do not skip a step because a later step feels like a better fit.
 
-Types and distinguishing markers:
+The five types:
 
-1. "retail_policy" — an individual/family health insurance POLICY SCHEDULE. Names one or more specific insured persons, lists sum insured, premium breakdown, policy number, period of insurance. Addressed to the policyholder.
+1. "rejection_letter" — a claim denial letter addressed to a claimant. References a specific CLAIM NUMBER, states a rejection reason, cites a policy clause, and usually gives appeal/grievance contacts.
 
-2. "policy_wording" — the insurer's generic TERMS AND CONDITIONS document. Dense legal/clinical definitions, long exclusion lists, waiting period clauses, claim procedures. No personal data about any specific policyholder; describes the product in the abstract.
+2. "group_policy" — a CORPORATE / EMPLOYER-SPONSORED policy document. Names an employer/company as the policyholder, defines who counts as employee / spouse / dependent children / parents, references corporate floater, termination of employment, and typically has blanket co-payment clauses.
 
-3. "brochure" — a marketing/sales collateral document. Pitch-shaped, uses promotional language, lists plan options/variants, eligibility bands, discounts, and optional covers. No personal data. Often has phrases like "Why choose us", "Key benefits", "Plan variants".
+3. "retail_policy" — an INDIVIDUAL/FAMILY POLICY SCHEDULE. Names one or more specific insured persons with their DOB, sum insured, premium breakdown, policy number and period of insurance. Addressed to the policyholder.
 
-4. "group_policy" — a CORPORATE / EMPLOYER-SPONSORED policy document. Names an employer/company as the policyholder, defines who counts as employee / spouse / dependent children / parents, references corporate floater, termination of employment, and typically has blanket co-payment clauses.
+4. "brochure" — a marketing/sales collateral document. Typically SHORT (usually 2–8 pages). Pitch-shaped: uses promotional language, lists plan options/variants, eligibility bands, discounts ("Welcome Discount", "Wellness Discount", "Moneyback"), and optional covers. No personal data. Often has phrases like "Why choose us", "Key benefits", "Plan variants".
 
-5. "rejection_letter" — a claim denial letter addressed to a claimant. References a specific CLAIM NUMBER, states a rejection reason, cites a policy clause, often mentions the rejected amount and an appeals/grievance process.
+5. "policy_wording" — the insurer's generic TERMS AND CONDITIONS document. Typically LONG (usually 25+ pages, often 40+). Legal/clinical language with a "Definitions" section, numbered clauses, detailed waiting-period tables, extensive exclusion lists, and claim procedures. No personal data. Describes the product in the abstract.
+
+Decision hierarchy (apply in order, stop at the first match):
+- If the document references a specific claim number with a denial reason → rejection_letter.
+- Else if an employer/company is named as the policyholder and employee/dependent definitions appear → group_policy.
+- Else if one or more individual insured persons are named with their DOB, sum insured, and premium breakdown → retail_policy.
+- Else, among the two remaining generic product documents, length is a strong signal:
+    * ≤ 8 pages AND pitch-like content → brochure.
+    * ≥ 20 pages AND terms-and-conditions content → policy_wording.
+    * Between 9–19 pages: look at the nature of the text. Marketing language, "Plan variants", discount schedules, eligibility bands → brochure. Definitions, numbered clauses, dense legalese → policy_wording.
+
+Total page count of the document: {total_pages}
 
 Return JSON only with this exact shape:
-{{"type": "retail_policy" | "policy_wording" | "brochure" | "group_policy" | "rejection_letter", "confidence": <number between 0.0 and 1.0>, "reasoning": "<one sentence explaining the markers you saw>"}}
+{{"type": "retail_policy" | "policy_wording" | "brochure" | "group_policy" | "rejection_letter", "confidence": <number between 0.0 and 1.0>, "reasoning": "<one sentence naming the specific markers you saw>"}}
 
 Document content (first few pages):
 {document_content}"""
