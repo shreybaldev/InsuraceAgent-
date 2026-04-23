@@ -136,6 +136,53 @@ async def update_structured_content_data(
     )
 
 
+async def update_document_type(
+    db: AsyncIOMotorDatabase, user_id: str, policy_name: str, document_type: str
+):
+    """Set the document_type classification for a policy."""
+    await _ensure_policy(db, user_id, policy_name)
+    await db[COLLECTION].update_one(
+        {"user_id": user_id, "policies.policy_name": policy_name},
+        {
+            "$set": {
+                "policies.$.document_type": document_type,
+                "timestamp": datetime.now(timezone.utc),
+            }
+        },
+    )
+
+
+async def update_rendered_output_status(
+    db: AsyncIOMotorDatabase, user_id: str, policy_name: str, status: str
+):
+    """Update the rendered_output.status for a policy."""
+    await _ensure_policy(db, user_id, policy_name)
+    await db[COLLECTION].update_one(
+        {"user_id": user_id, "policies.policy_name": policy_name},
+        {
+            "$set": {
+                "policies.$.rendered_output.status": status,
+                "timestamp": datetime.now(timezone.utc),
+            }
+        },
+    )
+
+
+async def update_rendered_output_data(
+    db: AsyncIOMotorDatabase, user_id: str, policy_name: str, data: dict
+):
+    """Set the rendered_output.data (plain-English JTBD result) for a policy."""
+    await db[COLLECTION].update_one(
+        {"user_id": user_id, "policies.policy_name": policy_name},
+        {
+            "$set": {
+                "policies.$.rendered_output.data": data,
+                "timestamp": datetime.now(timezone.utc),
+            }
+        },
+    )
+
+
 async def get_user_policies(db: AsyncIOMotorDatabase, user_id: str) -> dict | None:
     """Get the full user document."""
     return await db[COLLECTION].find_one({"user_id": user_id}, {"_id": 0})

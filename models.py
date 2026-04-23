@@ -10,8 +10,10 @@ class ContentBlock(BaseModel):
 
 class Policy(BaseModel):
     policy_name: str
+    document_type: Optional[str] = None
     content: ContentBlock = Field(default_factory=ContentBlock)
     structured_content: ContentBlock = Field(default_factory=ContentBlock)
+    rendered_output: ContentBlock = Field(default_factory=ContentBlock)
 
 
 class UserPolicies(BaseModel):
