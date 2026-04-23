@@ -7,8 +7,10 @@ from insurance_rag.db import update_structured_content_status, update_structured
 from insurance_rag.prompts import STRUCTURED_EXTRACTION_PROMPT
 
 
-async def extract_structured_metrics(all_content: list[str], user_id: str, pdf_name: str):
-    """Extract structured insurance metrics (e.g. sum insured, waiting periods) from page content using GPT-4o-mini."""
+async def extract_structured_metrics(all_content: list[str], user_id: str, pdf_name: str) -> dict:
+    """Extract structured insurance metrics (e.g. sum insured, waiting periods) from page content using GPT-4o-mini.
+
+    Returns the parsed metrics dict (also persisted to Mongo)."""
     db = get_db()
     client = get_openai_client()
 
@@ -41,6 +43,8 @@ async def extract_structured_metrics(all_content: list[str], user_id: str, pdf_n
         await update_structured_content_status(db, user_id, pdf_name, "completed")
 
         logger.info(f"Structured extraction completed for user {user_id}, file {pdf_name}")
+
+        return metrics_data
 
     except Exception as e:
         logger.error(f"Structured extraction failed for user {user_id}, file {pdf_name}: {e}")
