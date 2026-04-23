@@ -191,3 +191,102 @@ Document content:
 
 General Insurance FAQ (use ONLY if the document above has no relevant information):
 {faq_context}"""
+
+
+CLASSIFICATION_PROMPT = """You are an insurance document classifier. Classify the following document into exactly one of these five types.
+
+Types and distinguishing markers:
+
+1. "retail_policy" — an individual/family health insurance POLICY SCHEDULE. Names one or more specific insured persons, lists sum insured, premium breakdown, policy number, period of insurance. Addressed to the policyholder.
+
+2. "policy_wording" — the insurer's generic TERMS AND CONDITIONS document. Dense legal/clinical definitions, long exclusion lists, waiting period clauses, claim procedures. No personal data about any specific policyholder; describes the product in the abstract.
+
+3. "brochure" — a marketing/sales collateral document. Pitch-shaped, uses promotional language, lists plan options/variants, eligibility bands, discounts, and optional covers. No personal data. Often has phrases like "Why choose us", "Key benefits", "Plan variants".
+
+4. "group_policy" — a CORPORATE / EMPLOYER-SPONSORED policy document. Names an employer/company as the policyholder, defines who counts as employee / spouse / dependent children / parents, references corporate floater, termination of employment, and typically has blanket co-payment clauses.
+
+5. "rejection_letter" — a claim denial letter addressed to a claimant. References a specific CLAIM NUMBER, states a rejection reason, cites a policy clause, often mentions the rejected amount and an appeals/grievance process.
+
+Return JSON only with this exact shape:
+{{"type": "retail_policy" | "policy_wording" | "brochure" | "group_policy" | "rejection_letter", "confidence": <number between 0.0 and 1.0>, "reasoning": "<one sentence explaining the markers you saw>"}}
+
+Document content (first few pages):
+{document_content}"""
+
+
+POLICY_WORDING_EXTRACTION_PROMPT = """You are a health insurance policy wording analyst. Read the policy wording document below and populate the following JSON schema EXACTLY.
+
+Rules:
+- Preserve the schema's exact key structure. Do not add or rename keys. For fields not found in the document, leave the value as null.
+- Every boolean in "add_ons_active" must be set to true ONLY if there is explicit evidence in the document that the add-on is included / active. Ambiguous or silent = false.
+- "exclusions.claim_reducers.*" booleans must be true ONLY when the reducer is contractually enforced in this document (e.g. a room-rent proportionate deduction clause is stated). Do not infer from market convention.
+- Waiting periods should be captured in MONTHS when the document expresses them in years (convert 2 years → 24).
+- Return JSON only. No prose, no code fences.
+
+Target schema:
+{schema}
+
+Document content:
+{document_content}"""
+
+
+BROCHURE_EXTRACTION_PROMPT = """You are a health insurance brochure analyst. Read the brochure below and populate the following JSON schema EXACTLY.
+
+Rules:
+- Preserve the schema's exact key structure. For fields not present in the brochure, leave the value as null.
+- "coverage.sum_insured_options" should be a list of the sum-insured tiers offered (as stated).
+- "eligibility.cover_type" captures individual / family floater / both.
+- For "moneyback" and "loyalty_boost", "trigger" is the condition the brochure states unlocks the benefit, in the brochure's own words (short phrase).
+- Return JSON only. No prose, no code fences.
+
+Target schema:
+{schema}
+
+Document content:
+{document_content}"""
+
+
+GROUP_POLICY_EXTRACTION_PROMPT = """You are a corporate/group health insurance policy analyst. Read the group policy document below and populate the following JSON schema EXACTLY.
+
+Rules:
+- Preserve the schema's exact key structure. For fields not found, leave the value as null.
+- "family_definition.*" — capture exactly who the policy lists as eligible family members. lgbtq_members / gender_reassignment_surgery / hormonal_therapy are booleans set only if the document explicitly includes them.
+- "copayment.*_pct" values are percentages as numbers (10 not "10%"). If a different copay applies to specified illnesses or modern treatments, fill those fields separately.
+- "critical_flags" is the MOST IMPORTANT block. For each flag, set it to true ONLY if the document's terms match the described gotcha:
+    * coverage_ends_on_termination: policy cover terminates when the employee leaves the employer
+    * no_portability_to_personal_retail_on_exit: exiting employee cannot port this cover to a personal retail plan carrying their waiting-period credits
+    * copay_10pct_all_claims_real_oop: a blanket co-pay of ≥10% applies to all claims (not just one sub-category)
+    * modern_treatments_50pct_copay_significant_exposure: modern / advanced treatments (robotic, stem cell, oral chemo, etc.) carry a co-pay of 50% or more
+    * corporate_floater_not_for_maternity: the corporate floater sum insured cannot be drawn against maternity claims
+    * parents_one_set_only: only one set of parents is allowed (not both own + in-laws)
+    * ayush_govt_hospital_only: AYUSH treatment is payable only in government/accredited hospitals
+    * reimbursement_intimation_within_24hrs_of_admission: claim intimation required within 24 hours of admission under threat of partial/total denial
+- Return JSON only. No prose, no code fences.
+
+Target schema:
+{schema}
+
+Document content:
+{document_content}"""
+
+
+REJECTION_LETTER_EXTRACTION_PROMPT = """You are a claim rejection letter analyst. Read the rejection letter below and populate the following JSON schema EXACTLY.
+
+Rules:
+- Preserve the schema's exact key structure. For fields not present in the letter, leave the value as null.
+- "rejection_details.clause_cited" should be the specific policy clause text or identifier the insurer points to (e.g. "Section 3(c) - Pre-existing Disease waiting period").
+- "rejection_details.amount_rejected" should include the amount with currency symbol if the letter provides one (e.g. "INR 1,25,000").
+- "appeal_flags":
+    * is_appeal_possible: true unless the letter explicitly closes the matter with no further recourse.
+    * anomaly_flag: true if the rejection cites procedural or documentary reasons that could be rectified (missing doc, intimation delay) rather than substantive policy exclusion.
+    * deadline_flag: true if the letter mentions a time-bound window for appeal/grievance.
+    * cross_doc_flag: true if the rejection references another document (earlier letter, policy schedule, pre-auth form) that the claimant would need to cross-reference.
+    * appeal_strength: one of "strong", "moderate", "weak", "none". Use "strong" for clear procedural anomalies or obviously misapplied exclusions; "moderate" for ambiguous cases; "weak" for clean substantive denials; "none" for truly final / non-appealable matters.
+- "escalation_path.*" fields — populate with whatever contact details the letter provides; leave null if not mentioned.
+- Return JSON only. No prose, no code fences.
+
+Target schema:
+{schema}
+
+Document content:
+{document_content}"""
