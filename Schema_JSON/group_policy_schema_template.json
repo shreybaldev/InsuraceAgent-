@@ -1,0 +1,139 @@
+{
+  "_meta": {
+    "source_doc_type": null,
+    "insurer": null,
+    "product_name": null,
+    "policy_number": null,
+    "policyholder": null,
+    "uin": null,
+    "period_start": null,
+    "period_end": null,
+    "total_insured": null,
+    "policy_type": null,
+    "source_doc_flag": null
+  },
+
+  "coverage": {
+    "sum_insured_graded_INR": null,
+    "corporate_floater_INR": null,
+    "corporate_floater_per_family_sublimit_INR": null,
+    "corporate_floater_usable_for_maternity": null,
+    "room_rent": null,
+    "pre_hospitalisation_days": null,
+    "post_hospitalisation_days": null,
+    "day_care": null,
+    "ayush": null,
+    "ambulance": {
+      "road_limit_INR": null,
+      "air_limit_INR": null
+    },
+    "donor_expenses": null,
+    "maternity": {
+      "normal_delivery_INR": null,
+      "c_section_INR": null,
+      "pre_post_natal_INR": null,
+      "metro_nonmetro_same": null,
+      "applicable_to": null,
+      "waiting_period": null
+    },
+    "baby_day_one_cover": null,
+    "psychiatric_mental_disorder_limit_INR": null,
+    "congenital_external": null,
+    "refractive_error": null,
+    "hospital_cash": {
+      "per_day_INR": null,
+      "max_days": null,
+      "trigger": null,
+      "applicable_to_parents": null
+    },
+    "nursing_allowance": {
+      "per_day_INR": null,
+      "max_days": null,
+      "deductible_days": null,
+      "max_payable_INR": null
+    },
+    "family_transport_benefit_INR": null,
+    "covid19": null,
+    "terrorism": null
+  },
+
+  "family_definition": {
+    "employee": null,
+    "spouse": null,
+    "dependent_children_max_age": null,
+    "dependent_children_max_count": null,
+    "parents_or_parents_in_law": null,
+    "parents_max_age": null,
+    "lgbtq_members": null,
+    "gender_reassignment_surgery": null,
+    "hormonal_therapy": null
+  },
+
+  "waiting_periods": {
+    "initial_30_days": null,
+    "specific_disease": null,
+    "ped": null,
+    "maternity": null
+  },
+
+  "copayment": {
+    "all_claims_pct": null,
+    "specified_illness_pct": null,
+    "modern_treatments_pct": null,
+    "parental_claims": null,
+    "maternity": null,
+    "capped_ailments": null
+  },
+
+  "modern_treatments_covered_with_copay": null,
+
+  "disease_capping": null,
+
+  "key_exclusions": {
+    "permanent": null,
+    "refractive_error_covered_above_dioptres": null,
+    "stem_cell_exception": null,
+    "congenital_external_exception": null
+  },
+
+  "critical_flags": {
+    "coverage_ends_on_termination": null,
+    "no_portability_to_personal_retail_on_exit": null,
+    "copay_10pct_all_claims_real_oop": null,
+    "modern_treatments_50pct_copay_significant_exposure": null,
+    "corporate_floater_not_for_maternity": null,
+    "parents_one_set_only": null,
+    "ayush_govt_hospital_only": null,
+    "reimbursement_intimation_within_24hrs_of_admission": null
+  },
+
+  "vas_rider": {
+    "health_risk_assessment": null,
+    "tele_consultation": null,
+    "network_provider_discounts": null,
+    "flexicare_emergency_support": null
+  },
+
+  "claim_mechanics": {
+    "planned_pre_auth_hours": null,
+    "emergency_intimation_hours": null,
+    "claims_administrator": null,
+    "claims_toll_free": null,
+    "claims_email": null
+  },
+
+  "premium": {
+    "net_INR": null,
+    "gst_INR": null,
+    "total_gross_INR": null
+  },
+
+  "escalation": {
+    "toll_free": null,
+    "senior_citizen_line": null,
+    "email": null,
+    "grievance_officer": null,
+    "irdai_igms": null,
+    "ombudsman": null
+  }
+}

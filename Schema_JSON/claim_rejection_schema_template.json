@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "source_doc_type": null,
+    "insurer": null,
+    "source_doc_flag": null
+  },
+
+  "claim_identity": {
+    "claim_number": null,
+    "policy_number": null,
+    "policy_name": null,
+    "policyholder_name": null,
+    "patient_name": null,
+    "patient_is_policyholder": null,
+    "patient_relation_to_policyholder": null,
+    "date_of_intimation": null,
+    "date_of_rejection": null,
+    "rejection_letter_date": null
+  },
+
+  "rejection_details": {
+    "rejection_type": null,
+    "reason_summary": null,
+    "clause_cited": null,
+    "treatment_or_test_in_question": null,
+    "date_of_treatment_or_test": null,
+    "insurer_observation": null,
+    "partial_or_full_rejection": null,
+    "amount_rejected": null
+  },
+
+  "appeal_flags": {
+    "is_appeal_possible": null,
+    "anomaly_flag": null,
+    "deadline_flag": null,
+    "cross_doc_flag": null,
+    "appeal_strength": null
+  },
+
+  "escalation_path": {
+    "step_1_internal": {
+      "contact": null,
+      "email": null,
+      "response_sla_days": null
+    },
+    "step_2_grievance_officer": {
+      "contact": null,
+      "email": null
+    },
+    "step_3_ombudsman": {
+      "applicable_office": null,
+      "email": null,
+      "cio_portal": null
+    },
+    "step_4_irdai": {
+      "portal": null,
+      "toll_free": null
+    },
+    "customer_care": {
+      "toll_free": null,
+      "email": null,
+      "senior_citizen_number": null
+    }
+  }
+}

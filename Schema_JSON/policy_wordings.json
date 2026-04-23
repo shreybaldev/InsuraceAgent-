@@ -1,0 +1,204 @@
+{
+  "policy_meta": {
+    "insurer": null,
+    "product_name": null,
+    "uin": null,
+    "policy_type": null,
+    "policy_number": null,
+    "period_start": null,
+    "period_end": null,
+    "zone": null,
+    "source_doc": null
+  },
+
+  "insured_members": [
+    {
+      "name": null,
+      "relation": null,
+      "dob": null,
+      "sum_insured": null,
+      "add_ons_active": null,
+      "ped_declared": null,
+      "waiting_periods_remaining": {
+        "ped_months": null,
+        "specific_disease_months": null,
+        "initial_30_day": null
+      },
+      "loadings": null,
+      "nominee": null
+    }
+  ],
+
+  "coverage": {
+    "sum_insured": null,
+    "policy_structure": null,
+    "room_rent": {
+      "entitlement": null,
+      "icu_capped": null,
+      "proportionate_deduction_applies": null
+    },
+    "pre_hospitalisation_days": null,
+    "post_hospitalisation_days": null,
+    "day_care": null,
+    "domiciliary": null,
+    "ayush": null,
+    "ambulance": {
+      "road": null,
+      "air": null
+    },
+    "donor_expenses": null,
+    "restoration": {
+      "available": null,
+      "trigger": null,
+      "max_times": null,
+      "carries_forward": null
+    },
+    "loyalty_bonus": {
+      "rate_pct_per_year": null,
+      "max_accumulation_pct": null,
+      "survives_claim": null,
+      "applicable_to_unlimited_si": null
+    },
+    "technological_treatments": null
+  },
+
+  "add_ons_active": {
+    "infinite_care": null,
+    "power_booster": null,
+    "jumpstart": null,
+    "maternity": null,
+    "newborn_baby": null,
+    "newborn_vaccinations": null,
+    "befit": null,
+    "worldwide_cover": null,
+    "claim_protector": null,
+    "inflation_protector": null,
+    "domestic_air_ambulance": null,
+    "convalescence_benefit": null,
+    "nursing_at_home": null,
+    "compassionate_visit": null,
+    "health_checkup": null,
+    "critical_illness": null,
+    "personal_accident": null,
+    "chronic_disease_management": null,
+    "tele_consultation": null,
+    "durable_medical_equipment": null,
+    "room_modifier": null,
+    "network_advantage": null,
+    "senior_care": null,
+    "two_hour_hospitalisation": null,
+    "voluntary_copayment": null,
+    "voluntary_deductible": null,
+    "nri_advantage": null
+  },
+
+  "premium": {
+    "total": null,
+    "base": null,
+    "add_on": null,
+    "loading": null,
+    "gst": null,
+    "payment_mode": null,
+    "grace_period_days": null,
+    "next_due": null
+  },
+
+  "claim_mechanics": {
+    "cashless": {
+      "available": null,
+      "pre_auth_planned_hours": null,
+      "pre_auth_emergency_hours": null,
+      "response_sla_hours": null,
+      "final_auth_sla_hours": null
+    },
+    "reimbursement": {
+      "submission_deadline_days_post_discharge": null,
+      "processing_days": null
+    },
+    "claim_payout_order": null,
+    "toll_free": null,
+    "email": null
+  },
+
+  "cost_reduction_levers": {
+    "wellness_discount": {
+      "available": null,
+      "max_discount_pct": null,
+      "app_required": null,
+      "points_expire_on_policy_expiry": null
+    },
+    "network_advantage_discount_pct": null,
+    "nri_discount_pct": null,
+    "voluntary_copayment_opted": null,
+    "voluntary_deductible_opted": null
+  },
+
+  "exclusions": {
+    "waiting_periods": {
+      "initial_30_days": {
+        "months": null,
+        "accident_exempt": null,
+        "waived_after_months": null
+      },
+      "pre_existing_disease": {
+        "months": null,
+        "reducible_via": null,
+        "portability_credit": null
+      },
+      "specific_diseases": {
+        "months": null,
+        "conditions": null,
+        "accident_exempt": null,
+        "reducible_via": null
+      },
+      "90_day_illnesses": {
+        "months": null,
+        "conditions": null,
+        "waived_after_months": null
+      },
+      "maternity": {
+        "months": null,
+        "reducible_via": null
+      },
+      "bariatric": {
+        "months": null,
+        "reducible_via": null
+      },
+      "worldwide": {
+        "months": null,
+        "accident_exempt": null,
+        "reducible_via": null
+      }
+    },
+    "permanent": null,
+    "permanent_exceptions": null,
+    "domiciliary_excluded_conditions": null,
+    "non_payable_items": null,
+    "non_payable_unlockable_via": null,
+    "claim_reducers": {
+      "room_rent_proportionate": {
+        "trigger": null,
+        "not_applicable_to": null
+      },
+      "copayment": {
+        "trigger": null
+      },
+      "deductible": {
+        "trigger": null
+      },
+      "network_copayment_pct": {
+        "trigger": null,
+        "pct": null
+      }
+    },
+    "policy_void_triggers": null
+  },
+
+  "escalation": {
+    "toll_free": null,
+    "email": null,
+    "irdai_portal": null,
+    "irdai_toll_free": null,
+    "ombudsman_applicable_office": null
+  }
+}

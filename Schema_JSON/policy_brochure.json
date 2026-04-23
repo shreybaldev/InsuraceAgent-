@@ -1,0 +1,90 @@
+{
+  "_meta": {
+    "source_doc_type": null,
+    "source_doc_flag": null,
+    "insurer": null,
+    "product_name": null,
+    "uin": null
+  },
+
+  "coverage": {
+    "sum_insured_options": null,
+    "room_rent_entitlement": null,
+    "room_rent_proportionate_deduction": null,
+    "pre_hospitalisation_days": null,
+    "post_hospitalisation_days": null,
+    "restoration": {
+      "available": null,
+      "unlimited": null,
+      "same_illness_covered": null
+    },
+    "cumulative_bonus": {
+      "rate_pct_per_year": null,
+      "max_pct": null,
+      "survives_claim": null
+    },
+    "day_care": null,
+    "domiciliary": null,
+    "ayush": null,
+    "ambulance_modes": null,
+    "donor_expenses": null,
+    "advance_technology": null
+  },
+
+  "waiting_periods": {
+    "initial_days": null,
+    "specific_disease_months": null,
+    "ped_months": null,
+    "ped_reducible_via": null,
+    "accident_exempt": null
+  },
+
+  "key_exclusions": {
+    "permanent": null,
+    "domiciliary_excluded_conditions": null,
+    "non_payable_unlockable_via": null
+  },
+
+  "cost_and_rewards": {
+    "welcome_discount": null,
+    "wellness_discount_max_pct": null,
+    "moneyback": {
+      "available": null,
+      "trigger": null
+    },
+    "loyalty_boost": {
+      "available": null,
+      "trigger": null,
+      "benefit": null
+    },
+    "copayment": null,
+    "deductible": null
+  },
+
+  "eligibility": {
+    "min_entry_age_adult": null,
+    "min_entry_age_child_days": null,
+    "max_entry_age_adult": null,
+    "max_entry_age_child": null,
+    "cover_type": null,
+    "tenure_options": null,
+    "zones": null
+  },
+
+  "key_optional_covers": {
+    "instant_ped_cover": null,
+    "claim_shield_non_payables": null,
+    "critical_illness": null,
+    "worldwide_cover": null,
+    "maternity": null,
+    "opd_cover": null
+  },
+
+  "claim_contact": {
+    "toll_free": null,
+    "whatsapp": null,
+    "email": null,
+    "app": null,
+    "irdai_portal": null
+  }
+}
