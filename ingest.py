@@ -6,8 +6,9 @@ Flow:
      group_policy, rejection_letter) — unless --force-type is given.
   3. Dispatch to the matching module's extract() to populate the type-specific
      schema in MongoDB.
-  4. Render the extracted structured data into a plain-English JTBD output,
-     persist it, and print it to stdout."""
+  4. Render the extracted structured data into a JTBD-shaped dict.
+  5. Narrate that render as a warm, natural-language paragraph via GPT-4o-mini.
+  6. Persist both (structured + narrative) and print the narrative for the demo."""
 
 import argparse
 import asyncio
@@ -30,10 +31,13 @@ from insurance_rag.db import (
     update_rendered_output_status,
 )
 from insurance_rag.modules import MODULES
+from insurance_rag.narrator import narrate
 from insurance_rag.pdf_processor import extract_pages_from_pdf
 
 
-async def ingest_pdf(pdf_path: str, user_id: str, force_type: str | None = None) -> dict:
+async def ingest_pdf(
+    pdf_path: str, user_id: str, force_type: str | None = None
+) -> dict:
     await ensure_indexes(get_db())
     pdf_name = os.path.basename(pdf_path)
 
@@ -57,13 +61,33 @@ async def ingest_pdf(pdf_path: str, user_id: str, force_type: str | None = None)
     module = MODULES[doc_type]
     structured = await module.extract(pages, user_id, pdf_name)
     rendered = module.render(structured)
+    narrative = await narrate(doc_type, rendered)
 
-    await update_rendered_output_data(db, user_id, pdf_name, rendered)
+    rendered_output = {"structured": rendered, "narrative": narrative}
+    await update_rendered_output_data(db, user_id, pdf_name, rendered_output)
     await update_rendered_output_status(db, user_id, pdf_name, "completed")
 
     logger.info(f"Ingestion complete: doc_type={doc_type}, file={pdf_name}, user={user_id}")
 
-    return {"document_type": doc_type, "result": rendered}
+    return {"document_type": doc_type, "result": rendered_output}
+
+
+def _print_result(result: dict, verbose: bool):
+    doc_type = result["document_type"]
+    narrative = result["result"]["narrative"]
+    structured = result["result"]["structured"]
+
+    banner = "═" * 72
+    print()
+    print(banner)
+    print(f"  Document type: {doc_type}")
+    print(banner)
+    print()
+    print(narrative)
+    print()
+    if verbose:
+        print("── Structured details ──")
+        print(json.dumps(structured, indent=2, default=str))
 
 
 def main():
@@ -75,6 +99,11 @@ def main():
         default=None,
         choices=sorted(VALID_TYPES),
         help="Skip classification and force this document type (for testing)",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Also print the structured JSON alongside the narrative",
     )
     args = parser.parse_args()
 
@@ -88,7 +117,7 @@ def main():
         except ClassificationError as e:
             logger.error(f"Classification failed: {e}")
             sys.exit(2)
-        print(json.dumps(result, indent=2, default=str))
+        _print_result(result, args.verbose)
     finally:
         close_clients()
 
