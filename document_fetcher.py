@@ -10,7 +10,7 @@ FETCH_ENDPOINT = "/cr/insure/admin/documents/fetch"
 
 async def fetch_user_documents(user_id: str, auth_token: str) -> list[dict]:
     """Fetch document metadata (including signed URLs) for a user from the insurance API."""
-    api_base_url = os.getenv("API_BASE_URL", "https://api.askmyfi.dev")
+    api_base_url = os.getenv("API_BASE_URL", "")
     url = f"{api_base_url}{FETCH_ENDPOINT}"
 
     async with httpx.AsyncClient(timeout=30) as client:
